@@ -1,25 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
+import TimeEntry from './TimeEntry';
+import LoginButton from './LoginButton';
+import { ProvideAuth } from './useAuth';
+
 import './App.css';
 
 function App() {
+  const [timeEntries, setTimeEntries] = useState([<TimeEntry key={1} />]);
+
+  const addTimeEntry = () => {
+    let key = timeEntries.length + 1;
+    setTimeEntries([...timeEntries, <TimeEntry key={key} />]);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ProvideAuth>
+      <div className="app">
+        <div className="container text-center">
+          <h1>clio-multi-timer</h1>
+        </div>
+        <div className="container text-right mb-2">
+          <LoginButton />
+          <button className="btn btn-primary" onClick={addTimeEntry}>Add</button>
+        </div>
+        <div className="container">
+          {timeEntries}
+        </div>
+      </div>
+    </ProvideAuth>
   );
 }
 
