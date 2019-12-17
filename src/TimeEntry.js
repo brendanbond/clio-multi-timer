@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import Timer from './Timer';
 import DatePicker from 'react-datepicker';
 import Select from 'react-select';
+import SyncButton from './SyncButton';
+import Alert from './Alert';
 import { useAuth } from './useAuth';
 import './TimeEntry.css';
 import "react-datepicker/dist/react-datepicker.css";
@@ -29,6 +31,9 @@ function TimeEntry(props) {
   const [isSyncing, setIsSyncing] = useState(false);
   const [isSynced, setIsSynced] = useState(false);
 
+  const [errState, setErrState] = useState(false);
+  const [errMessage, setErrMessage] = useState("");
+
   const auth = useAuth();
 
   const startTimer = () => {
@@ -40,7 +45,7 @@ function TimeEntry(props) {
     timerStart.current = timerTime;
   }
 
-  const handleClick = (e) => {
+  const toggleTimer = (e) => {
     e.preventDefault();
     if (timerRunning) {
       stopTimer();
@@ -107,44 +112,48 @@ function TimeEntry(props) {
 
     const success = auth.submitActivity(auth.authToken, data);
     if (success) {
+      setIsSyncing(false);
       setIsSynced(true);
     }
     else {
+      setIsSyncing(false);
       //TODO: error handling
       console.log("Sync operation failed");
     }
-
   }
 
   return (
-    <div className="container time-entry p-2 mb-4">
-      <div className="form-row pl-2 pr-2">
-        <div className="form-group col-lg-2">
-          <label htmlFor="date"><strong>Date</strong></label>
-          <DatePicker
-            className="form-control"
-            selected={startDate}
-            onChange={date => setStartDate(date)}
-            popperPlacement={"top-end"}
-          />
-        </div>
-        <div className="form-group col-lg-3">
-          <label htmlFor="description"><strong>Description</strong></label>
-          <input value={activityDescription} onChange={handleInputChange} type="text" className="form-control" name="description"></input>
-        </div>
-        <div className="form-group col-lg-2">
-          <label htmlFor="matter"><strong>Matter</strong></label>
-          <Select onChange={option => setSelectedMatter(option)} options={matterOptions} />
-        </div>
-        <div className="form-group col-lg-2">
-          <label htmlFor="category"><strong>Category</strong></label>
-          <Select onChange={option => setSelectedCategory(option)} options={categoryOptions} />
-        </div>
-        <div className="form-group col-lg-3 text-center align-self-end">
-          <Timer handleClick={handleClick} time={timerTime} />
-          <button className="btn btn-primary" onClick={submitActivity}>Sync</button>
+    <div className="container">
+      <div className="container time-entry p-2 mb-4">
+        <div className="form-row pl-2 pr-2">
+          <div className="form-group col-lg-2">
+            <label htmlFor="date"><strong>Date</strong></label>
+            <DatePicker
+              className="form-control"
+              selected={startDate}
+              onChange={date => setStartDate(date)}
+              popperPlacement={"top-end"}
+            />
+          </div>
+          <div className="form-group col-lg-3">
+            <label htmlFor="description"><strong>Description</strong></label>
+            <input value={activityDescription} onChange={handleInputChange} type="text" className="form-control" name="description"></input>
+          </div>
+          <div className="form-group col-lg-2">
+            <label htmlFor="matter"><strong>Matter</strong></label>
+            <Select onChange={option => setSelectedMatter(option)} options={matterOptions} />
+          </div>
+          <div className="form-group col-lg-2">
+            <label htmlFor="category"><strong>Category</strong></label>
+            <Select onChange={option => setSelectedCategory(option)} options={categoryOptions} />
+          </div>
+          <div className="form-group col-lg-3 text-center align-self-end">
+            <Timer handleClick={toggleTimer} time={timerTime} />
+            <SyncButton isSynced={isSynced} isSyncing={isSyncing} onClick={submitActivity} />
+          </div>
         </div>
       </div>
+      {errState ? <Alert alertText={errMessage} /> : ("")}
     </div>
   );
 }
