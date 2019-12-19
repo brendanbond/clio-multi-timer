@@ -46,11 +46,11 @@ function TimeEntry(props) {
     if (timer.timerTime < 360000) {
       problems.push('Not enough time to bill.');
     }
-
     if (problems.length !== 0) {
       setError(problems);
       return;
     }
+
     setIsSyncing(true);
     const data = {
       data: {
@@ -96,6 +96,7 @@ function TimeEntry(props) {
             </label>
             <DatePicker
               className="form-control"
+              disabled={isSynced}
               selected={activityDate}
               onChange={date => setActivityDate(date)}
               popperPlacement={'top-end'}
@@ -111,6 +112,7 @@ function TimeEntry(props) {
               type="text"
               className="form-control"
               name="description"
+              disabled={isSynced}
             ></input>
           </div>
           <div className="form-group col-lg-2">
@@ -120,6 +122,7 @@ function TimeEntry(props) {
             <Select
               onChange={option => setSelectedMatter(option)}
               options={matters}
+              isDisabled={isSynced}
             />
           </div>
           <div className="form-group col-lg-2">
@@ -129,12 +132,17 @@ function TimeEntry(props) {
             <Select
               onChange={option => setSelectedCategory(option)}
               options={categories}
+              isDisabled={isSynced}
             />
           </div>
           <div className="form-group col-lg-3 text-center align-self-end">
-            <Timer handleClick={timer.toggleTimer} time={timer.timerTime} />
+            <Timer
+              handleClick={timer.toggleTimer}
+              time={timer.timerTime}
+              disabled={isSynced}
+            />
             <SyncButton
-              isSynced={isSynced}
+              disabled={isSynced}
               isSyncing={isSyncing}
               onClick={submitActivity}
             />
