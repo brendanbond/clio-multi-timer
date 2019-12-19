@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import TimeEntry from './TimeEntry';
-import LoginButton from './LoginButton';
-import { ProvideAuth } from './useAuth';
+import TimeEntry from './components/TimeEntry';
+import LoginButton from './components/LoginButton';
+import { ProvideAuth } from './hooks/useAuth';
 
 import './App.css';
 
@@ -21,11 +21,11 @@ function App() {
         </div>
         <div className="container text-right mb-2">
           <LoginButton />
-          <button className="btn btn-primary" onClick={addTimeEntry}>Add</button>
+          <button className="btn btn-primary" onClick={addTimeEntry}>
+            Add
+          </button>
         </div>
-        <div className="container">
-          {timeEntries}
-        </div>
+        <div className="container">{timeEntries}</div>
       </div>
     </ProvideAuth>
   );

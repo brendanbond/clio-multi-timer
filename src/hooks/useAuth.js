@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, createContext } from "react";
+import React, { useState, useEffect, useContext, createContext } from 'react';
 import axios from 'axios';
 import queryString from 'query-string';
 
@@ -6,14 +6,14 @@ const authContext = createContext();
 
 // Provider component that wraps your app and makes auth object ...
 // ... available to any child component that calls useAuth().
-export function ProvideAuth({ children }) {
+function ProvideAuth({ children }) {
   const auth = useProvideAuth();
   return <authContext.Provider value={auth}>{children}</authContext.Provider>;
 }
 
 // Hook for child components to get the auth object ...
 // ... and re-render when it changes.
-export const useAuth = () => {
+const useAuth = () => {
   return useContext(authContext);
 };
 
@@ -50,7 +50,7 @@ function useProvideAuth() {
           return;
         }
         const params = new URL(popup.location).searchParams;
-        const code = params.get("code");
+        const code = params.get('code');
         if (!code) {
           return;
         }
@@ -61,17 +61,19 @@ function useProvideAuth() {
         console.log(err);
       }
     }, 200);
-  }
+  };
 
   const onCode = (code, params) => {
     setIsFetchingAuth(true);
-    axios.get(`https://clio-multi-timer-server.herokuapp.com/auth?code=${code}`)
-      .then((res) => {
+    axios
+      .get(`https://clio-multi-timer-server.herokuapp.com/auth?code=${code}`)
+      .then(res => {
+        console.log(res);
         setAuthToken(res.data.access_token);
         setIsAuth(true);
         setIsFetchingAuth(false);
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
         setIsFetchingAuth(false);
       });
@@ -85,9 +87,9 @@ function useProvideAuth() {
     return;
   };
 
-  const getMatters = (authToken) => {
+  const getMatters = authToken => {
     const token = `Bearer ${authToken}`;
-    const url = "https://app.clio.com/api/v4/matters.json";
+    const url = 'https://app.clio.com/api/v4/matters.json';
     return axios.get(url, {
       params: {
         fields: 'id,display_number,description',
@@ -99,9 +101,9 @@ function useProvideAuth() {
     });
   };
 
-  const getCategories = (authToken) => {
+  const getCategories = authToken => {
     const token = `Bearer ${authToken}`;
-    const url = "https://app.clio.com/api/v4/activity_descriptions.json";
+    const url = 'https://app.clio.com/api/v4/activity_descriptions.json';
     return axios.get(url, {
       params: {
         fields: 'id,name',
@@ -115,19 +117,20 @@ function useProvideAuth() {
 
   const submitActivity = (authToken, data) => {
     const token = `Bearer ${authToken}`;
-    const url = "https://app.clio.com/api/v4/activities.json";
-    return axios.post(url, data, {
-      headers: {
-        Authorization: token
-      }
-    }).then((res) => {
-      if (res.status === 200) {
-        return true;
-      }
-      else {
-        return false;
-      }
-    });
+    const url = 'https://app.clio.com/api/v4/activities.json';
+    return axios
+      .post(url, data, {
+        headers: {
+          Authorization: token
+        }
+      })
+      .then(res => {
+        if (res.status === 200) {
+          return true;
+        } else {
+          return false;
+        }
+      });
   };
 
   // Return the user object and auth methods
@@ -142,3 +145,5 @@ function useProvideAuth() {
     submitActivity
   };
 }
+
+export { ProvideAuth, useAuth };

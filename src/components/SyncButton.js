@@ -18,7 +18,7 @@ function SyncButton(props) {
     );
   } else if (props.isSynced && !props.isSyncing) {
     return (
-      <button className="btn btn-disabled">
+      <button className="btn btn-primary disabled">
         Synced!
       </button>
     )
