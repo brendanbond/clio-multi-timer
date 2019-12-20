@@ -38,7 +38,7 @@ function useProvideAuth() {
     const params = queryString.stringify({
       response_type: 'code',
       client_id: 'MYAsywFlsKfGDXOwCsH75QUKIZ527ZWFIxvWtczw',
-      redirect_uri: 'https://localhost:3000/auth'
+      redirect_uri: 'https://clio-multi-timer.herokuapp.com/auth'
     });
     const url = baseUrl + params;
 
