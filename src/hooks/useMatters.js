@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useAuth } from './useAuth';
 
-function useMatters(auth) {
+function useMatters() {
+  const auth = useAuth();
   const [options, setOptions] = useState([
     {
       value: null,
-      label: 'Login to Clio to access matters.'
+      label: 'Log in to Clio to access matters.'
     }
   ]);
 

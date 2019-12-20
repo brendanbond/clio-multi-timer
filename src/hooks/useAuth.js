@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useContext, createContext } from 'react';
+import React, { useState, useContext, createContext, useEffect } from 'react';
+import { useLocalStorage } from './useLocalStorage';
 import axios from 'axios';
 import queryString from 'query-string';
 
@@ -19,10 +20,16 @@ const useAuth = () => {
 
 // Provider hook that creates auth object and handles state
 function useProvideAuth() {
-  const [authToken, setAuthToken] = useState(null);
+  const [authToken, setAuthToken] = useLocalStorage('authToken', null);
 
   const [isAuth, setIsAuth] = useState(false);
   const [isFetchingAuth, setIsFetchingAuth] = useState(false);
+
+  useEffect(() => {
+    if (authToken && !isAuth) {
+      setIsAuth(true);
+    }
+  }, [authToken, isAuth]);
 
   const createPopup = () => {
     const width = 500;
@@ -133,7 +140,7 @@ function useProvideAuth() {
       });
   };
 
-  // Return the user object and auth methods
+  // Return the auth object and auth methods
   return {
     authToken,
     createPopup,

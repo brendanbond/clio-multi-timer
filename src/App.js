@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import TimeEntry from './components/TimeEntry';
-import LoginButton from './components/LoginButton';
+import AuthorizeButton from './components/AuthorizeButton';
 import { ProvideAuth } from './hooks/useAuth';
 
 import './App.css';
@@ -20,7 +20,7 @@ function App() {
           <h1>clio-multi-timer</h1>
         </div>
         <div className="container text-right mb-2">
-          <LoginButton />
+          <AuthorizeButton />
           <button className="btn btn-primary" onClick={addTimeEntry}>
             Add
           </button>

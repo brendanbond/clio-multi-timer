@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
+import { useAuth } from './useAuth';
 
-function useCategories(auth) {
+function useCategories() {
+  const auth = useAuth();
+
   const [options, setOptions] = useState([
     {
       value: null,
-      label: 'Login to Clio to access categories.'
+      label: 'Log in to Clio to access categories.'
     }
   ]);
 

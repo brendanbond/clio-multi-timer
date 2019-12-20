@@ -7,7 +7,7 @@ function Timer(props) {
 
   return (
     <button
-      className={'btn btn-primary mr-2' + (props.disabled ? 'disabled' : '')}
+      className={'btn btn-primary mr-2 ' + (props.disabled ? 'disabled' : '')}
       onClick={props.handleClick}
     >
       {hours + ':' + minutes + ':' + seconds}

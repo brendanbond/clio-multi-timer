@@ -34,6 +34,9 @@ function TimeEntry(props) {
   const submitActivity = () => {
     //check that all needed data has been selected
     let problems = [];
+    if (!auth.isAuth) {
+      problems.push('User not logged in to Clio.');
+    }
     if (activityDescription === '') {
       problems.push('Describe your activity.');
     }
@@ -73,8 +76,7 @@ function TimeEntry(props) {
       setIsSynced(true);
     } else {
       setIsSyncing(false);
-      //TODO: error handling
-      console.log('Sync operation failed');
+      setError(['Sync failed. Please try again later.']);
     }
   };
 

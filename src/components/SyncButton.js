@@ -1,4 +1,5 @@
 import React from 'react';
+import Loading from './Loading';
 
 function SyncButton(props) {
   if (!props.disabled && !props.isSyncing) {
@@ -9,12 +10,8 @@ function SyncButton(props) {
     );
   } else if (props.isSyncing) {
     return (
-      <button className="btn btn-primary" onClick={props.onClick}>
-        <div className="bouncing-loader">
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
+      <button className="btn btn-primary">
+        <Loading />
       </button>
     );
   } else if (props.disabled && !props.isSyncing) {
