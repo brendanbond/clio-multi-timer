@@ -38,8 +38,12 @@ function useProvideAuth() {
     const params = queryString.stringify({
       response_type: 'code',
       client_id: 'MYAsywFlsKfGDXOwCsH75QUKIZ527ZWFIxvWtczw',
-      redirect_uri: 'https://clio-multi-timer.herokuapp.com/auth'
+      redirect_uri:
+        process.env.NODE_ENV === 'production'
+          ? 'https://clio-multi-timer.herokuapp.com/auth'
+          : 'https://localhost:3000/auth'
     });
+    console.log('process.env.NODE_ENV is ' + process.env.NODE_ENV);
     const url = baseUrl + params;
 
     const left = window.screenX + (window.outerWidth - width) / 2;
