@@ -67,7 +67,8 @@
   "scripts": {
     "start": "NODE_ENV=development node scripts/start.js",
     "build": "NODE_ENV=production node scripts/build.js",
-    "test": "NODE_ENV=test node scripts/test.js"
+    "test": "NODE_ENV=test node scripts/test.js",
+    "heroku-postbuild": "sed -i 's/process: \"ws\",/protocol: window.location.protocol === \"https:' ? 'wss' : 'ws'\",/g' /opt/docs/welcome.txt"
   },
   "eslintConfig": {
     "extends": "react-app"
