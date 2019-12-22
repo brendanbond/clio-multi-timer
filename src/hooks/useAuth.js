@@ -1,7 +1,7 @@
-import React, { useState, useContext, createContext, useEffect } from 'react';
-import { useLocalStorage } from './useLocalStorage';
-import axios from 'axios';
-import queryString from 'query-string';
+import React, { useState, useContext, createContext, useEffect } from "react";
+import { useLocalStorage } from "./useLocalStorage";
+import axios from "axios";
+import queryString from "query-string";
 
 const authContext = createContext();
 
@@ -20,7 +20,7 @@ const useAuth = () => {
 
 // Provider hook that creates auth object and handles state
 function useProvideAuth() {
-  const [authToken, setAuthToken] = useLocalStorage('authToken', null);
+  const [authToken, setAuthToken] = useLocalStorage("authToken", null);
 
   const [isAuth, setIsAuth] = useState(false);
   const [isFetchingAuth, setIsFetchingAuth] = useState(false);
@@ -34,23 +34,23 @@ function useProvideAuth() {
   const createPopup = () => {
     const width = 500;
     const height = 500;
-    const baseUrl = 'https://app.clio.com/oauth/authorize?';
+    const baseUrl = "https://app.clio.com/oauth/authorize?";
     const params = queryString.stringify({
-      response_type: 'code',
-      client_id: 'MYAsywFlsKfGDXOwCsH75QUKIZ527ZWFIxvWtczw',
+      response_type: "code",
+      client_id: "MYAsywFlsKfGDXOwCsH75QUKIZ527ZWFIxvWtczw",
       redirect_uri:
-        process.env.NODE_ENV === 'production'
-          ? 'https://clio-multi-timer.herokuapp.com/auth'
-          : 'https://localhost:3000/auth'
+        process.env.NODE_ENV === "production"
+          ? "https://clio-multi-timer.herokuapp.com/auth"
+          : "https://localhost:3000/auth"
     });
-    console.log('process.env.NODE_ENV is ' + process.env.NODE_ENV);
+    console.log("process.env.NODE_ENV is " + process.env.NODE_ENV);
     const url = baseUrl + params;
 
     const left = window.screenX + (window.outerWidth - width) / 2;
     const top = window.screenY + (window.outerHeight - height) / 2.5;
     const popup = window.open(
       url,
-      'Login to Clio',
+      "Login to Clio",
       `width=${width},height=${height},left=${left},top=${top}`
     );
 
@@ -61,7 +61,7 @@ function useProvideAuth() {
           return;
         }
         const params = new URL(popup.location).searchParams;
-        const code = params.get('code');
+        const code = params.get("code");
         if (!code) {
           return;
         }
@@ -100,48 +100,52 @@ function useProvideAuth() {
 
   const getMatters = authToken => {
     const token = `Bearer ${authToken}`;
-    const url = 'https://app.clio.com/api/v4/matters.json';
-    return axios.get(url, {
+    const config = {
       params: {
-        fields: 'id,display_number,description',
-        status: 'open'
+        fields: "id,display_number,description",
+        status: "open"
       },
       headers: {
+        "Content-Type": "application/json",
         Authorization: token
       }
-    });
+    };
+    const url = "https://app.clio.com/api/v4/matters.json";
+    return axios.get(url, config);
   };
 
   const getCategories = authToken => {
     const token = `Bearer ${authToken}`;
-    const url = 'https://app.clio.com/api/v4/activity_descriptions.json';
-    return axios.get(url, {
+    const config = {
       params: {
-        fields: 'id,name',
+        fields: "id,name",
         flat_rate: false
       },
       headers: {
+        "Content-Type": "application/json",
         Authorization: token
       }
-    });
+    };
+    const url = "https://app.clio.com/api/v4/activity_descriptions.json";
+    return axios.get(url, config);
   };
 
   const submitActivity = (authToken, data) => {
     const token = `Bearer ${authToken}`;
-    const url = 'https://app.clio.com/api/v4/activities.json';
-    return axios
-      .post(url, data, {
-        headers: {
-          Authorization: token
-        }
-      })
-      .then(res => {
-        if (res.status === 200) {
-          return true;
-        } else {
-          return false;
-        }
-      });
+    const url = "https://app.clio.com/api/v4/activities.json";
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token
+      }
+    };
+    return axios.post(url, data, config).then(res => {
+      if (res.status === 200) {
+        return true;
+      } else {
+        return false;
+      }
+    });
   };
 
   // Return the auth object and auth methods
