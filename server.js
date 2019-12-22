@@ -3,7 +3,6 @@ const morgan = require("morgan");
 
 const axios = require("axios");
 const querystring = require("querystring");
-const cookieParser = require("cookie-parser");
 
 const app = express();
 const port = process.env.PORT || 5000;
