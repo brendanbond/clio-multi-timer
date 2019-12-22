@@ -106,7 +106,7 @@ function useProvideAuth() {
         Authorization: token
       }
     };
-    const url = "https://app.clio.com/api/v4/matters.json";
+    const url = "/matters";
     return axios.get(url, config);
   };
 
