@@ -38,7 +38,7 @@ function useProvideAuth() {
     const params = queryString.stringify({
       response_type: "code",
       client_id: "MYAsywFlsKfGDXOwCsH75QUKIZ527ZWFIxvWtczw",
-      redirect_uri: "https://clio-multi-timer.herokuapp.com/auth"
+      redirect_uri: "https://clio-multi-timer.herokuapp.com/callback"
     });
 
     const url = baseUrl + params;
@@ -100,8 +100,8 @@ function useProvideAuth() {
     const data = {
       authToken: token
     };
-    const url = "/matters";
-    return axios.post(url, data);
+
+    return axios.post("/matters", queryString.stringify(data));
   };
 
   const getCategories = (authToken, data) => {

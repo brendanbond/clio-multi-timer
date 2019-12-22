@@ -3,11 +3,13 @@ const morgan = require("morgan");
 
 const axios = require("axios");
 const querystring = require("querystring");
+const bodyParser = require("body-parser");
 
 const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(morgan("dev"));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static(__dirname + "/dist"));
 
@@ -31,7 +33,17 @@ app.get("/auth", (req, res) => {
 
 app.post("/matters", (req, res) => {
   console.log("/matters endpoint reached.");
-  console.log(req.data);
+  if (!req.body.accessToken) {
+    return res.send("No authorization token in POST request.", 400);
+  }
+  getMatters(req.body.accessToken)
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      console.log(err);
+      res.send(err);
+    });
 });
 
 app.get("*", (req, res) => {
@@ -45,7 +57,7 @@ function getAuthObject(accessCode) {
     client_secret: process.env.CLIENT_SECRET,
     grant_type: "authorization_code",
     code: accessCode,
-    redirect_uri: "https://clio-multi-timer.herokuapp.com/auth"
+    redirect_uri: "https://clio-multi-timer.herokuapp.com/callback"
   };
 
   const config = {
@@ -73,14 +85,13 @@ function getAuthObject(accessCode) {
 }
 
 const getMatters = authToken => {
-  const token = `Bearer ${authToken}`;
   const config = {
     params: {
       fields: "id,display_number,description",
       status: "open"
     },
     headers: {
-      Authorization: token
+      Authorization: authToken
     }
   };
   const url = "https://app.clio.com/api/v4/matters.json";
