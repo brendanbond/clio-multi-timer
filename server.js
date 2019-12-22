@@ -29,9 +29,9 @@ app.get("/auth", (req, res) => {
   }
 });
 
-app.get("/matters", (req, res) => {
+app.post("/matters", (req, res) => {
   console.log("/matters endpoint reached.");
-  console.log(req);
+  console.log(req.data);
 });
 
 app.get("*", (req, res) => {
