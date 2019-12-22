@@ -97,20 +97,14 @@ function useProvideAuth() {
 
   const getMatters = authToken => {
     const token = `Bearer ${authToken}`;
-    const config = {
-      params: {
-        fields: "id,display_number,description",
-        status: "open"
-      },
-      headers: {
-        Authorization: token
-      }
+    const data = {
+      authToken: token
     };
     const url = "/matters";
-    return axios.get(url, config);
+    return axios.post(url, data);
   };
 
-  const getCategories = authToken => {
+  const getCategories = (authToken, data) => {
     const token = `Bearer ${authToken}`;
     const config = {
       params: {
