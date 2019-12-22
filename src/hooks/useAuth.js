@@ -106,7 +106,6 @@ function useProvideAuth() {
         status: "open"
       },
       headers: {
-        "Content-Type": "application/json",
         Authorization: token
       }
     };
@@ -122,7 +121,6 @@ function useProvideAuth() {
         flat_rate: false
       },
       headers: {
-        "Content-Type": "application/json",
         Authorization: token
       }
     };
