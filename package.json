@@ -6,10 +6,12 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build": "webpack"
+    "start": "node server.js",
+    "heroku-postbuild": "webpack"
   },
   "dependencies": {
     "axios": "^0.19.0",
+    "express": "^4.17.1",
     "query-string": "^6.9.0",
     "react": "^16.12.0",
     "react-datepicker": "^2.10.1",
