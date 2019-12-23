@@ -98,7 +98,7 @@ function useProvideAuth() {
   const getMatters = authToken => {
     const token = `Bearer ${authToken}`;
     const data = {
-      authToken: token
+      accessToken: token
     };
 
     return axios.post("/matters", queryString.stringify(data));
