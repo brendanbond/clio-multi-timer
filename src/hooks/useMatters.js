@@ -12,9 +12,9 @@ function useMatters() {
 
   useEffect(() => {
     if (auth.authToken) {
-      auth.getMatters(auth.authToken).then(res => {
-        console.log(res.data);
-        const options = res.data.data.map(option => {
+      auth.getMatters(auth.authToken).then(data => {
+        console.log(data);
+        const options = data.data.map(option => {
           return {
             value: option.id,
             label: option.display_number + " " + option.description
