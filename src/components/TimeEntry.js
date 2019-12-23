@@ -56,6 +56,7 @@ function TimeEntry(props) {
 
     setIsSyncing(true);
     const data = {
+      accessToken = `Bearer ${auth.authToken}`,
       data: {
         date: activityDate,
         note: activityDescription,
@@ -70,7 +71,7 @@ function TimeEntry(props) {
       }
     };
 
-    const success = auth.submitActivity(auth.authToken, data);
+    const success = auth.submitActivity(data);
     if (success) {
       setIsSyncing(false);
       setIsSynced(true);

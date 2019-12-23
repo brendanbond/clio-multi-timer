@@ -116,12 +116,8 @@ function useProvideAuth() {
     return axios.post("/categories", queryString.stringify(data));
   };
 
-  const submitActivity = authToken => {
-    const token = `Bearer ${authToken}`;
-    const data = {
-      accessToken: token
-    };
-
+  const submitActivity = data => {
+    //is it bad that I don't revalidate data here?
     return axios.post("/submit_activity", data).then(res => {
       if (res.status === 200) {
         return true;

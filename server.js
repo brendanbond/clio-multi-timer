@@ -70,7 +70,11 @@ app.post("/submit_activity", (req, res) => {
     console.log("No auth token");
     return res.sendStatus(400).send("No authorization token in POST request.");
   }
-  res.send(submitActivity(req.body.accessToken));
+  if (!req.body.data) {
+    console.log("No data to submit");
+    return res.sendStatus(400).send("No data in POST request.");
+  }
+  res.send(submitActivity(req.body.accessToken, req.body.data));
 });
 
 app.get("/callback", (req, res) => {
@@ -147,12 +151,11 @@ const getCategories = authToken => {
 };
 
 const submitActivity = (authToken, data) => {
-  const token = `Bearer ${authToken}`;
   const url = "https://app.clio.com/api/v4/activities.json";
   const config = {
     headers: {
       "Content-Type": "application/json",
-      Authorization: token
+      Authorization: authToken
     }
   };
   return axios.post(url, data, config);
