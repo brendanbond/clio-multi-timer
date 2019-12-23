@@ -122,7 +122,7 @@ function useProvideAuth() {
       accessToken: token
     };
 
-    return axios.post("/submit_activity", data, config).then(res => {
+    return axios.post("/submit_activity", data).then(res => {
       if (res.status === 200) {
         return true;
       } else {
