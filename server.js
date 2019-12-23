@@ -64,6 +64,15 @@ app.post("/categories", (req, res) => {
     });
 });
 
+app.post("/submit_activity", (req, res) => {
+  console.log("/submit_activity endpoint reached.");
+  if (!req.body.accessToken) {
+    console.log("No auth token");
+    return res.sendStatus(400).send("No authorization token in POST request.");
+  }
+  res.send(submitActivity(req.body.accessToken));
+});
+
 app.get("/callback", (req, res) => {
   res.sendStatus(200);
 });
@@ -146,13 +155,7 @@ const submitActivity = (authToken, data) => {
       Authorization: token
     }
   };
-  return axios.post(url, data, config).then(res => {
-    if (res.status === 200) {
-      return true;
-    } else {
-      return false;
-    }
-  });
+  return axios.post(url, data, config);
 };
 
 app.listen(port, () => {

@@ -118,14 +118,11 @@ function useProvideAuth() {
 
   const submitActivity = (authToken, data) => {
     const token = `Bearer ${authToken}`;
-    const url = "https://app.clio.com/api/v4/activities.json";
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token
-      }
+    const data = {
+      accessToken: token
     };
-    return axios.post(url, data, config).then(res => {
+
+    return axios.post("/submit_activity", data, config).then(res => {
       if (res.status === 200) {
         return true;
       } else {
