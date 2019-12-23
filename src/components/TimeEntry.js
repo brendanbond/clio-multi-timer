@@ -61,10 +61,10 @@ function TimeEntry(props) {
         date: activityDate,
         note: activityDescription,
         matter: {
-          id: selectedMatter.value
+          id: selectedMatter.value,
         },
         activity_description: {
-          id: selectedCategory.value
+          id: selectedCategory.value,
         },
         quantity: Math.floor(timer.timerTime / 1000),
         type: 'TimeEntry'
