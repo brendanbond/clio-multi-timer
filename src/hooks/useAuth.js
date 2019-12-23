@@ -116,7 +116,7 @@ function useProvideAuth() {
     return axios.post("/categories", queryString.stringify(data));
   };
 
-  const submitActivity = (authToken, data) => {
+  const submitActivity = authToken => {
     const token = `Bearer ${authToken}`;
     const data = {
       accessToken: token
