@@ -53,7 +53,9 @@ function TimeEntry(props) {
       setError(problems);
       return;
     }
-
+    if (timer.timerRunning) {
+      timer.stopTimer();
+    }
     setIsSyncing(true);
     const data = {
       accessToken: `Bearer ${auth.authToken}`,

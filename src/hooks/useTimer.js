@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from "react";
 
 function useTimer() {
   const [timerRunning, setTimerRunning] = useState(false);
@@ -29,7 +29,7 @@ function useTimer() {
       timerStart.current = Date.now() - timerStart.current;
       interval.current = setInterval(() => {
         setTimerTime(Date.now() - timerStart.current);
-      }, 1000);
+      }, 500);
     } else {
       clearInterval(interval.current);
     }
