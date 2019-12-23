@@ -34,7 +34,8 @@ app.get("/auth", (req, res) => {
 app.post("/matters", (req, res) => {
   console.log("/matters endpoint reached.");
   if (!req.body.accessToken) {
-    return res.send("No authorization token in POST request.", 400);
+    console.log("No auth token");
+    return res.sendStatus(400).send("No authorization token in POST request.");
   }
   getMatters(req.body.accessToken)
     .then(data => {
@@ -46,7 +47,7 @@ app.post("/matters", (req, res) => {
     });
 });
 
-app.get("*", (req, res) => {
+app.get("/", (req, res) => {
   res.sendFile(path.resolve(__dirname, "index.html"));
 });
 
