@@ -154,6 +154,8 @@ const getCategories = authToken => {
 
 const submitActivity = (authToken, data) => {
   const url = "https://app.clio.com/api/v4/activities.json";
+  console.log("Data is");
+  console.log(data);
   const config = {
     headers: {
       "Content-Type": "application/json",
