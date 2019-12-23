@@ -23,7 +23,7 @@ function useCategories() {
         setOptions(options);
       });
     }
-  }, [auth]);
+  }, [auth.authToken]);
 
   return options;
 }

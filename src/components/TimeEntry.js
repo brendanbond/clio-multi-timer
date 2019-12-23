@@ -58,16 +58,18 @@ function TimeEntry(props) {
     const data = {
       accessToken: `Bearer ${auth.authToken}`,
       data: {
-        date: activityDate,
-        note: activityDescription,
-        matter: {
-          id: selectedMatter.value
-        },
-        activity_description: {
-          id: selectedCategory.value
-        },
-        quantity: Math.floor(timer.timerTime / 1000),
-        type: "TimeEntry"
+        data: {
+          date: activityDate,
+          note: activityDescription,
+          matter: {
+            id: selectedMatter.value
+          },
+          activity_description: {
+            id: selectedCategory.value
+          },
+          quantity: Math.floor(timer.timerTime / 1000),
+          type: "TimeEntry"
+        }
       }
     };
 
