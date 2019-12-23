@@ -66,6 +66,7 @@ app.post("/categories", (req, res) => {
 
 app.post("/submit_activity", (req, res) => {
   console.log("/submit_activity endpoint reached.");
+  console.log(req.body);
   if (!req.body.accessToken) {
     console.log("No auth token");
     return res.sendStatus(400).send("No authorization token in POST request.");
