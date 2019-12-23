@@ -1,26 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import Timer from './Timer';
-import SyncButton from './SyncButton';
-import Alert from './Alert';
-import DatePicker from 'react-datepicker';
-import Select from 'react-select';
-import { useTimer } from '../hooks/useTimer';
-import { useAuth } from '../hooks/useAuth';
-import { useMatters } from '../hooks/useMatters';
-import { useCategories } from '../hooks/useCategories';
-import './TimeEntry.css';
-import 'react-datepicker/dist/react-datepicker.css';
+import React, { useState, useEffect } from "react";
+import Timer from "./Timer";
+import SyncButton from "./SyncButton";
+import Alert from "./Alert";
+import DatePicker from "react-datepicker";
+import Select from "react-select";
+import { useTimer } from "../hooks/useTimer";
+import { useAuth } from "../hooks/useAuth";
+import { useMatters } from "../hooks/useMatters";
+import { useCategories } from "../hooks/useCategories";
+import "./TimeEntry.css";
+import "react-datepicker/dist/react-datepicker.css";
 
 function TimeEntry(props) {
   const [activityDate, setActivityDate] = useState(new Date());
-  const [activityDescription, setActivityDescription] = useState('');
+  const [activityDescription, setActivityDescription] = useState("");
   const [selectedMatter, setSelectedMatter] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
 
   const [isSyncing, setIsSyncing] = useState(false);
   const [isSynced, setIsSynced] = useState(false);
 
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const auth = useAuth();
   const timer = useTimer();
@@ -35,19 +35,19 @@ function TimeEntry(props) {
     //check that all needed data has been selected
     let problems = [];
     if (!auth.isAuth) {
-      problems.push('User not logged in to Clio.');
+      problems.push("User not logged in to Clio.");
     }
-    if (activityDescription === '') {
-      problems.push('Describe your activity.');
+    if (activityDescription === "") {
+      problems.push("Describe your activity.");
     }
     if (!selectedMatter) {
-      problems.push('Select a matter.');
+      problems.push("Select a matter.");
     }
     if (!selectedCategory) {
-      problems.push('Select a category.');
+      problems.push("Select a category.");
     }
     if (timer.timerTime < 360000) {
-      problems.push('Not enough time to bill.');
+      problems.push("Not enough time to bill.");
     }
     if (problems.length !== 0) {
       setError(problems);
@@ -56,18 +56,18 @@ function TimeEntry(props) {
 
     setIsSyncing(true);
     const data = {
-      accessToken = `Bearer ${auth.authToken}`,
+      accessToken: `Bearer ${auth.authToken}`,
       data: {
         date: activityDate,
         note: activityDescription,
         matter: {
-          id: selectedMatter.value,
+          id: selectedMatter.value
         },
         activity_description: {
-          id: selectedCategory.value,
+          id: selectedCategory.value
         },
         quantity: Math.floor(timer.timerTime / 1000),
-        type: 'TimeEntry'
+        type: "TimeEntry"
       }
     };
 
@@ -77,7 +77,7 @@ function TimeEntry(props) {
       setIsSynced(true);
     } else {
       setIsSyncing(false);
-      setError(['Sync failed. Please try again later.']);
+      setError(["Sync failed. Please try again later."]);
     }
   };
 
@@ -102,7 +102,7 @@ function TimeEntry(props) {
               disabled={isSynced}
               selected={activityDate}
               onChange={date => setActivityDate(date)}
-              popperPlacement={'top-end'}
+              popperPlacement={"top-end"}
             />
           </div>
           <div className="form-group col-lg-3">
