@@ -1,5 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
+const https = require("https");
+const fs = require("fs");
 
 const axios = require("axios");
 const querystring = require("querystring");
@@ -7,6 +9,8 @@ const bodyParser = require("body-parser");
 
 const app = express();
 const port = process.env.PORT || 5000;
+
+require("dotenv").config();
 
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -39,12 +43,30 @@ app.post("/matters", (req, res) => {
   }
   getMatters(req.body.accessToken)
     .then(data => {
-      res.send(data);
+      res.send(data.data);
     })
     .catch(err => {
       console.log(err);
-      res.send(err);
     });
+});
+
+app.post("/categories", (req, res) => {
+  console.log("/categories endpoint reached.");
+  if (!req.body.accessToken) {
+    console.log("No auth token");
+    return res.sendStatus(400).send("No authorization token in POST request.");
+  }
+  getCategories(req.body.accessToken)
+    .then(data => {
+      res.send(data.data);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+});
+
+app.get("/callback", (req, res) => {
+  res.sendStatus(200);
 });
 
 app.get("/", (req, res) => {
@@ -58,7 +80,10 @@ function getAuthObject(accessCode) {
     client_secret: process.env.CLIENT_SECRET,
     grant_type: "authorization_code",
     code: accessCode,
-    redirect_uri: "https://clio-multi-timer.herokuapp.com/callback"
+    redirect_uri:
+      process.env.NODE_ENV === "production"
+        ? "https://clio-multi-timer.herokuapp.com/callback"
+        : "https://localhost:5000/callback"
   };
 
   const config = {
@@ -96,20 +121,17 @@ const getMatters = authToken => {
     }
   };
   const url = "https://app.clio.com/api/v4/matters.json";
-  axios.get(url, config).then(res => {
-    return res;
-  });
+  return axios.get(url, config);
 };
 
 const getCategories = authToken => {
-  const token = `Bearer ${authToken}`;
   const config = {
     params: {
       fields: "id,name",
       flat_rate: false
     },
     headers: {
-      Authorization: token
+      Authorization: authToken
     }
   };
   const url = "https://app.clio.com/api/v4/activity_descriptions.json";
@@ -134,4 +156,15 @@ const submitActivity = (authToken, data) => {
   });
 };
 
-app.listen(port);
+https
+  .createServer(
+    {
+      key: fs.readFileSync("server.key"),
+      cert: fs.readFileSync("server.cert")
+    },
+    app
+  )
+  .listen(port, () => {
+    console.log("Server up");
+    console.log("Process variable is " + process.env.NODE_ENV);
+  });

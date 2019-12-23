@@ -38,7 +38,10 @@ function useProvideAuth() {
     const params = queryString.stringify({
       response_type: "code",
       client_id: "MYAsywFlsKfGDXOwCsH75QUKIZ527ZWFIxvWtczw",
-      redirect_uri: "https://clio-multi-timer.herokuapp.com/callback"
+      redirect_uri:
+        process.env.NODE_ENV === "production"
+          ? "https://clio-multi-timer.herokuapp.com/callback"
+          : "https://localhost:5000/callback"
     });
 
     const url = baseUrl + params;
@@ -104,19 +107,13 @@ function useProvideAuth() {
     return axios.post("/matters", queryString.stringify(data));
   };
 
-  const getCategories = (authToken, data) => {
+  const getCategories = authToken => {
     const token = `Bearer ${authToken}`;
-    const config = {
-      params: {
-        fields: "id,name",
-        flat_rate: false
-      },
-      headers: {
-        Authorization: token
-      }
+    const data = {
+      accessToken: token
     };
-    const url = "https://app.clio.com/api/v4/activity_descriptions.json";
-    return axios.get(url, config);
+
+    return axios.post("/categories", queryString.stringify(data));
   };
 
   const submitActivity = (authToken, data) => {

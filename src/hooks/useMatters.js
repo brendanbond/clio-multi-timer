@@ -13,8 +13,8 @@ function useMatters() {
   useEffect(() => {
     if (auth.authToken) {
       auth.getMatters(auth.authToken).then(res => {
-        console.log(res);
-        const options = data.data.map(option => {
+        //TODO: find out why there are so many nested datas
+        const options = res.data.data.map(option => {
           return {
             value: option.id,
             label: option.display_number + " " + option.description
