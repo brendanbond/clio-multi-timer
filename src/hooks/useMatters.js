@@ -12,8 +12,8 @@ function useMatters() {
 
   useEffect(() => {
     if (auth.authToken) {
-      auth.getMatters(auth.authToken).then(data => {
-        console.log(data);
+      auth.getMatters(auth.authToken).then(res => {
+        console.log(res);
         const options = data.data.map(option => {
           return {
             value: option.id,
