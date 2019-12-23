@@ -160,7 +160,9 @@ const submitActivity = (authToken, data) => {
       Authorization: authToken
     }
   };
-  return axios.post(url, data, config);
+  return axios.post(url, data, config).catch(err => {
+    console.log(err);
+  });
 };
 
 app.listen(port, () => {
