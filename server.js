@@ -1,6 +1,5 @@
 const express = require("express");
 const morgan = require("morgan");
-const https = require("https");
 const fs = require("fs");
 
 const axios = require("axios");
@@ -156,15 +155,7 @@ const submitActivity = (authToken, data) => {
   });
 };
 
-https
-  .createServer(
-    {
-      key: fs.readFileSync("server.key"),
-      cert: fs.readFileSync("server.cert")
-    },
-    app
-  )
-  .listen(port, () => {
-    console.log("Server up");
-    console.log("Process variable is " + process.env.NODE_ENV);
-  });
+app.listen(port, () => {
+  console.log("Server up");
+  console.log("Process variable is " + process.env.NODE_ENV);
+});
