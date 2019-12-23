@@ -96,7 +96,9 @@ const getMatters = authToken => {
     }
   };
   const url = "https://app.clio.com/api/v4/matters.json";
-  return axios.get(url, config);
+  axios.get(url, config).then(res => {
+    return res;
+  });
 };
 
 const getCategories = authToken => {
